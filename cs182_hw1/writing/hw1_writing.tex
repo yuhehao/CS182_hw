@@ -1,0 +1,134 @@
+%!TEX program = xelatex
+\documentclass[10pt]{article}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{tikz}
+\usepackage{listings}
+\usetikzlibrary{arrows}
+\usepackage{subfigure}
+\usepackage{graphicx,booktabs,multirow}
+\usepackage[a4paper]{geometry}
+\usepackage{upquote}
+\usepackage{float}
+\usepackage{pdfpages}
+
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\lstset{language=Matlab}
+\lstset{breaklines}
+
+\input defs.tex
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\titleformat*{\section}{\centering\LARGE\scshape}
+\renewcommand{\thesection}{\Roman{section}}
+\lstset{language=Matlab,tabsize=4,frame=shadowbox,basicstyle=\footnotesize,
+keywordstyle=\color{blue!90}\bfseries,breaklines=true,commentstyle=\color[RGB]{50,50,50},stringstyle=\ttfamily,numbers=left,numberstyle=\tiny,
+  numberstyle={\color[RGB]{192,92,92}\tiny},backgroundcolor=\color[RGB]{245,245,244},inputpath=code}
+
+\begin{document}
+
+\date{\today}
+\title{Introduction to Machine Learning, Spring 2022 \\
+	Homework 1\\
+	\small (Due Friday, Mar. 18 at 11:59pm (CST))}
+\maketitle
+\begin{enumerate}[1.]
+
+
+	\item \defpoints{10} Given the input variables $X \in \mathbb{R}^p$ and output variable $Y \in \mathbb{R}$, the Expected Prediction Error (EPE) is defined by
+	      \begin{equation}
+		      \text{EPE}(\hat{f}) = \mathbb{E}[L(Y,f(X))],
+	      \end{equation}
+	      where $\mathbb{E}(\cdot)$ denotes the expectation over the joint distribution $\text{Pr}(X,Y)$, and $L(Y,f(X))$ is a loss function measuring the difference between the estimated $f(X)$ and observed $Y$.
+	      We have shown in our course that for the squared error loss $L(Y,f(X))=(Y-f(X))^2$, the regression function $f(x) = \mathbb{E}(Y|X=x)$
+	      is the optimal solution of $\min_f \text{EPE}(f)$ in the pointwise manner.
+	      \begin{itemize}
+		      \item[(a)] In Least Squares, a linear model $X^\top \beta$ is used to approximate $f(X)$ according to
+		            \begin{equation}
+			            \min_\beta  \mathbb{E}[(Y-X^\top \beta)^2].
+		            \end{equation}
+		            Please derive the optimal solution of the model parameters $\beta$.~\defpoints{3}
+		      \item[(b)] Please explain how the nearest neighbors and least squares approximate the regression function, and discuss their difference.~\defpoints{3}
+		      \item[(c)] Given absolute error loss $L(Y,f(X))=|Y-f(X)|$, please prove that $f(x) = \text{median}(Y|X=x)$ minimizes $\text{EPE}(f)$ w.r.t. $f$.~\defpoints{4}
+	      \end{itemize}
+
+
+\textbf{Solution:}
+	\item[\textbf{(a)}] 
+	$$
+	\begin{aligned}
+	\frac{\partial E[(Y-X^T\beta)^2]}{\partial \beta} &= -2X^T(Y-X^T\beta)E[(Y-X^T\beta)] 
+	\end{aligned} 
+	$$
+	Let $$
+	\begin{aligned}
+	\frac{\partial E[(Y-X^T\beta)^2]}{\partial \beta} &= 0
+	\end{aligned} 
+	$$
+	
+	\item[\textbf{(b)}] The nearest neighbors: $\hat{Y}(x)=\frac{1}{k}\sum_{x_i\in N_k(x)}y_i$
+		  Firstly, it uses the neighbours information to approximate the current point. Also, it uses the average value instead of the approximate expectation.
+		  \\The least squares: 
+	\item[\textbf{(c)}] 
+
+	      \newpage
+
+	\item \defpoints{10} Consider real-valued variables $X$ and $Y$, in which $Y$ is generated conditional on $X$ according to
+	      $$
+		      Y = aX + b + \epsilon, \ \text{where} \ \epsilon \sim \mathcal{N}(0, \sigma^2).
+	      $$
+	      Here $\epsilon$ is an independent variable, called a noise term, which is drawn from a Gaussian distribution with mean 0,
+	      and variance $\sigma^2$. This is a single variable linear regression model, where $a$ is the only weight parameter and $b$ denotes the intercept.
+	      The conditional probability of $Y$ has a distribution $p(Y | X, a, b) \sim \mathcal{N}(aX+b, \sigma^2)$, so it can be written as:
+	      $$
+		      p(Y|X, a,b) = \frac{1}{\sqrt{2\pi}\sigma}\exp\left(-\frac{1}{2\sigma^2}(Y - aX -b)^2\right).
+	      $$
+	      \begin{itemize}
+		      \item[(a)] Assume we have a training dataset of $n$ i.i.d. pairs $(x_i, y_i)$, $i = 1, 2, ..., n$, and
+		            the likelihood function is defined by $L(a,b) = \prod_{i=1}^n p(y_i | x_i, a, b)$. Please write the
+		            Maximum Likelihood Estimation (MLE) problem for estimating $a$ and $b$.~\defpoints{3}
+		      \item[(b)] Estimate the optimal solution of $a$ and $b$ by solving the MLE problem in (a).~\defpoints{4}
+		      \item[(c)] Based on the result in (b), argue that the learned linear model $f(X) = aX + b$,
+		            always passes through the point $(\bar{x},\bar{y})$,
+		            where $\bar{x} = \tfrac{1}{n}\sum_{i=1}^{n}x_{i}$ and $\bar{y} = \tfrac{1}{n}\sum_{i=1}^{n}y_{i}$ denote the sample means.~\defpoints{3}
+	      \end{itemize}
+
+
+
+
+
+	      \newpage
+
+	\item \defpoints{10} Given a set of training data $(\mathbf{x}_{1},y_1),\cdots,(\mathbf{x}_{N},y_N)$ from which to estimate the parameters $\bm{\beta}$,
+	      where each $\mathbf{x}_{i} = \left[x_{i1},\cdots,x_{ip} \right]^{T}$ denotes a vector of feature measurements for the $i$th sample.
+	      Consider a linear regression problem in which we want to \textquotedblleft weight\textquotedblright different training examples differently.
+	      Specifically, suppose we aim at minimizing
+	      \begin{equation}
+		      \textrm{RSS}(\bm{\beta}) = \frac{1}{2}\sum_{i=1}^{N}w_{i}(y_{i} -\mathbf{x}_{i}^{T}\bm{\beta})^{2}.
+		      \label{eq:3}
+	      \end{equation}
+	      \begin{itemize}
+		      \item[(a)] Show that $\textrm{RSS}(\bm{\beta}) = (\mathbf{X}\bm{\beta} - \mathbf{y})^{T}\mathbf{W}(\mathbf{X}\bm{\beta}-\mathbf{y})$
+		            for an appropriate diagonal matrix $\mathbf{W}$, and where $\mathbf{X} = \left[\mathbf{x}_{1},\cdots,\mathbf{x}_{N} \right]^{T}$ and $\mathbf{y} = \left[y_1,\cdots,y_N \right]^{T}$.
+		            Please state clearly what $\mathbf{W}$ is. ~\defpoints{2}
+
+		      \item[(b)] By finding the derivative $\nabla_{\bm{\beta}}\textrm{RSS}(\bm{\beta})$ w.r.t. $\bm\beta$ and setting that to zero,
+		            derive the closed-form solution of $\bm{\beta}$ that minimizes $\textrm{RSS}(\bm{\beta})$.~\defpoints{3}
+
+		      \item[(c)] Is there any way to control the model complexity in \eqref{eq:3}? If yes,
+		            please formulate the $\textrm{RSS}(\bm\beta)$ and estimate its closed-form solution of $\bm\beta$.~\defpoints{5}
+
+	      \end{itemize}
+
+
+\end{enumerate}
+
+\end{document}
