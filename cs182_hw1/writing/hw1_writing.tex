@@ -1,5 +1,6 @@
 %!TEX program = xelatex
 \documentclass[10pt]{article}
+\author{He Haoyu}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{mathrsfs}
@@ -68,17 +69,21 @@ keywordstyle=\color{blue!90}\bfseries,breaklines=true,commentstyle=\color[RGB]{5
 	\frac{\partial E[(Y-X^T\beta)^2]}{\partial \beta} &= -2X^T(Y-X^T\beta)E[(Y-X^T\beta)] 
 	\end{aligned} 
 	$$
-	Let $$
+	Let 
+	$$
 	\begin{aligned}
 	\frac{\partial E[(Y-X^T\beta)^2]}{\partial \beta} &= 0
 	\end{aligned} 
 	$$
-	
+	$E[(Y-X^T\beta)^2]>0$, $X^T$ is a $1\times p$ matrix, so
+	$$Y-X^T\beta =0$$
+	Thus,
+		$$\beta = (X^T)^{-1}Y$$
 	\item[\textbf{(b)}] The nearest neighbors: $\hat{Y}(x)=\frac{1}{k}\sum_{x_i\in N_k(x)}y_i$
 		  Firstly, it uses the neighbours information to approximate the current point. Also, it uses the average value instead of the approximate expectation.
 		  \\The least squares: 
 	\item[\textbf{(c)}] 
-
+			
 	      \newpage
 
 	\item \defpoints{10} Consider real-valued variables $X$ and $Y$, in which $Y$ is generated conditional on $X$ according to
