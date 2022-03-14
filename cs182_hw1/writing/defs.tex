@@ -47,3 +47,39 @@
 
 \newcommand{\defpoints}[1]{{\color{magenta}{[#1 points]}}}
 \newcommand{\sol}{{\textcolor{colortsinghua}{Solution: }}}
+
+%
+% Various Helper Commands
+%
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+\newcommand{\dy}{\mathrm{d}y}
+\newcommand{\dt}{\mathrm{d}t}
+\newcommand{\ds}{\mathrm{d}s}
+\newcommand{\dz}{\mathrm{d}z}
+\newcommand{\dk}{\mathrm{d}k}
+\newcommand{\dm}{\mathrm{d}m}
+\newcommand{\dn}{\mathrm{d}n}
+\newcommand{\du}{\mathrm{d}u}
+\newcommand{\dl}{\mathrm{d}l}
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solution}}
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Corr}{\mathrm{Corr}}
+\newcommand{\Bias}{\mathrm{Bias}}
+
+\newcommand{\genstirlingII}[3]{%
+  \genfrac{\{}{\}}{0pt}{#1}{#2}{#3}%
+}
+\newcommand{\stirlingII}[2]{\genstirlingII{}{#1}{#2}}
+

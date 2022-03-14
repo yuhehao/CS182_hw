@@ -80,11 +80,43 @@ keywordstyle=\color{blue!90}\bfseries,breaklines=true,commentstyle=\color[RGB]{5
 	Thus,
 		$$\beta = (X^T)^{-1}Y$$
 	\item[\textbf{(b)}] The nearest neighbors: $\hat{Y}(x)=\frac{1}{k}\sum_{x_i\in N_k(x)}y_i$
-		  Firstly, it uses the neighbours information to approximate the current point. Also, it uses the average value instead of the approximate expectation.
+		  \\Firstly, it uses the neighbours information to approximate the current point. Also, it uses the average value instead of the approximate expectation.
 		  \\The least squares: 
+		  \\Firstly, it uses the average number to approximate the actual number. By EPE, we know $\beta = E(XX^T)^{-1}E(XY)$, which can be approximate by average $\beta = (XX^T)^{-1}Xy$. 
 	\item[\textbf{(c)}] 
-			
-	      \newpage
+			By $L(Y,f(X))=|Y-f(X)|$, we know 
+			$$
+			\begin{aligned}
+				\hat{f}(x) &= \underset{f}{\operatorname{argmin}}E_{Y|X}[|Y-f(x)||X=x]
+				\\&= \underset{f}{\operatorname{argmin}}\int_y|y-f(x)|P_r(y|x)\dy
+			\end{aligned} 
+			$$
+			By Law of large numbers, we know 
+			$$
+			\begin{aligned}
+				\underset{f}{\operatorname{argmin}}E_{Y|X}[|Y-f(x)||X=x]
+				&= \lim_{n\rightarrow \infty}\frac{1}{n}\sum_{i=1}^N|y_i-f(x_i)|
+				\\&\approx \frac{1}{n}\sum_{i=1}^N|y_i-f(x_i)|(\text{when n is large})
+			\end{aligned} 
+			$$
+			Thus,
+			$$
+			\begin{aligned}
+				\underset{f}{\operatorname{argmin}}E_{Y|X}[|Y-f(x)||X=x]
+				&= \underset{f}{\operatorname{argmin}}\int_y|y-f(x)|P_r(y|x)\dy
+				\\&= \frac{1}{n}\sum_{i=1}^N|y_i-f(x_i)|
+			\end{aligned} 
+			$$
+			Then, use partial to get optimal f
+			$$
+			\begin{aligned}
+				&\frac{\partial \underset{f}{\operatorname{argmin}}\int_y|y-f(x)|P_r(y|x)\dy}{\partial f}=0
+				\\&\Rightarrow \frac{\partial \frac{1}{n}\sum_{i=1}^N|y_i-f(x_i)|}{\partial f}=0
+				\\&\Rightarrow \sum_{i=0}^N \sign (y_i-f(x_i))=0
+			\end{aligned} 
+			$$
+			Thus, we know $$f(x) = \text{median}(Y|X=x)$$
+			\newpage
 
 	\item \defpoints{10} Consider real-valued variables $X$ and $Y$, in which $Y$ is generated conditional on $X$ according to
 	      $$
