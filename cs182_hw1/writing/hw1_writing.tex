@@ -82,7 +82,7 @@ keywordstyle=\color{blue!90}\bfseries,breaklines=true,commentstyle=\color[RGB]{5
 	\item[\textbf{(b)}] The nearest neighbors: $\hat{Y}(x)=\frac{1}{k}\sum_{x_i\in N_k(x)}y_i$
 		  \\Firstly, it uses the neighbours information to approximate the current point. Also, it uses the average value instead of the approximate expectation.
 		  \\The least squares: 
-		  \\Firstly, it uses the average number to approximate the actual number. By EPE, we know $\beta = E(XX^T)^{-1}E(XY)$, which can be approximate by average $\beta = (XX^T)^{-1}Xy$. 
+		  \\Firstly, it replaces the theoretical expection by averaging over the obversed data. By EPE, we know $\beta = E(XX^T)^{-1}E(XY)$, which can be approximate by average $\beta = (XX^T)^{-1}Xy$. 
 	\item[\textbf{(c)}] 
 			By $L(Y,f(X))=|Y-f(X)|$, we know 
 			$$
@@ -164,8 +164,70 @@ keywordstyle=\color{blue!90}\bfseries,breaklines=true,commentstyle=\color[RGB]{5
 		            please formulate the $\textrm{RSS}(\bm\beta)$ and estimate its closed-form solution of $\bm\beta$.~\defpoints{5}
 
 	      \end{itemize}
-
-
-\end{enumerate}
+	\textbf{Solution:}
+		\item[\textbf{(a)}] First, 
+		$$W = \begin{bmatrix}
+			\frac{1}{2}w_1 &0  & \cdots   & 0  \\
+			0 & \frac{1}{2}w_2  & \cdots   & 0  \\
+			\vdots & \vdots  & \ddots   & \vdots  \\
+			0 & 0  & \cdots  & \frac{1}{2}w_N \\
+			\end{bmatrix}
+		$$
+		The proof is as following:
+		$$
+		\begin{aligned}
+			RSS(\beta) &= (X\beta-y)^T W (X\beta-y)
+			\\&=
+			\begin{bmatrix}
+				y_1-x_1^T\beta &y_2-x_2^T\beta  & \cdots   & y_N-x_N^T\beta \\
+			\end{bmatrix} 
+			\begin{bmatrix}
+			\frac{1}{2}w_1 &0  & \cdots   & 0  \\
+			0 & \frac{1}{2}w_2  & \cdots   & 0  \\
+			\vdots & \vdots  & \ddots   & \vdots  \\
+			0 & 0  & \cdots  & \frac{1}{2}w_N \\
+			\end{bmatrix} 
+			\begin{bmatrix}
+				y_1-x_1^T\beta   \\
+				y_2-x_2^T\beta   \\
+				\vdots 		     \\
+				y_N-x_N^T\beta   \\
+			\end{bmatrix}
+			\\&=\frac{1}{2}\sum_{i=1}^{N}w_{i}(y_{i} -x_{i}^{T}\beta)^{2}
+		\end{aligned}
+		$$
+		Thus, 
+		$$
+		W = \begin{bmatrix}
+			\frac{1}{2}w_1 &0  & \cdots   & 0  \\
+			0 & \frac{1}{2}w_2  & \cdots   & 0  \\
+			\vdots & \vdots  & \ddots   & \vdots  \\
+			0 & 0  & \cdots  & \frac{1}{2}w_N \\
+			\end{bmatrix}
+		$$
+		\item[\textbf{(b)}] 
+		$$
+		\begin{aligned}
+			\nabla_{\beta} RSS(\beta) &=\nabla_{\beta} (X\beta-y)^T W (X\beta-y)
+			\\&=2X^T W (X\beta-y)
+		\end{aligned}
+		$$
+		Setting that to zero, 
+		$$\nabla_{\beta} RSS(\beta) = 0$$
+		Then, 
+		$$
+		\begin{aligned}
+			&X^T W (X\beta-y) =  (X^T W X\beta- X^T Wy) = 0
+			\\&\Rightarrow \hat{\beta} = (X^T W X)^{-1}X^T Wy
+		\end{aligned}
+		$$
+		\item[\textbf{(c)}] 
+		Like Shrinkage methods-Ridge Regression, we can impose a penalty on the size.
+		$$\hat{\beta} = \underset{\beta}{\argmin}\left\{\frac{1}{2}\sum_{i=1}^{N}w_i\left(y_{i}-\beta_{0}-\sum_{j=1}^{p} x_{i j} \beta_{j}\right)^{2}+\lambda \sum_{j=1}^{p} \beta_j ^2\right\}$$ 
+		Using the same way in (b), we get
+		$$(X^T W X\beta- X^T Wy)+\lambda \beta = 0$$
+		Thus, 
+		$$\hat{\beta} = (X^T W X+\lambda I_p)^{-1}X^T Wy$$
+	\end{enumerate}
 
 \end{document}
