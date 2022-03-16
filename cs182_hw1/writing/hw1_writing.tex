@@ -137,8 +137,37 @@ keywordstyle=\color{blue!90}\bfseries,breaklines=true,commentstyle=\color[RGB]{5
 		            always passes through the point $(\bar{x},\bar{y})$,
 		            where $\bar{x} = \tfrac{1}{n}\sum_{i=1}^{n}x_{i}$ and $\bar{y} = \tfrac{1}{n}\sum_{i=1}^{n}y_{i}$ denote the sample means.~\defpoints{3}
 	      \end{itemize}
-
-
+		\item[\textbf{(a)}] 
+		$$
+		\begin{aligned}
+		L(a,b) &=\prod_{i=1}^n p(y_i|x_i,a,b) 
+		\\&= \left(\frac{1}{\sqrt{2\pi}\sigma}\right)^n\exp \left(-\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-ax_i-b)^2\right)
+		\end{aligned} 
+		$$
+		Which means, 
+		$$
+		\begin{aligned}
+		a,b = \underset{a,b}{\argmax} L(a,b)\Leftrightarrow \underset{a,b}{\argmin} \sum_{i=1}^{n}(y_i-ax_i-b)^2
+		\end{aligned} 
+		$$
+		\item[\textbf{(b)}] 
+		By (a) and LLSE,
+		$$
+		\begin{aligned}
+		a = \frac{\Cov(X,Y)}{\Var(X)} = \frac{\sum_{i=1}^{n}\left(x_i-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}
+		\end{aligned} 
+		$$
+		$$
+		\begin{aligned}
+		b = E(Y) -\frac{\Cov(X,Y)}{\Var(X)}E(X) = \bar{y} - a\bar{x} 
+		\end{aligned} 
+		$$
+		where we denote $\bar{x}=E(x);\bar{y}=E(y)$
+		\item[\textbf{(c)}] 
+		By (b), 
+		$$f(X) = aX+\bar{y} - a\bar{x}$$
+		So,$$f(\bar{x}) = a\bar{x} + \bar{y} - a\bar{x} = \bar{y}$$
+		Thus, it through passes $(\bar{x},\bar{y})$
 
 
 
