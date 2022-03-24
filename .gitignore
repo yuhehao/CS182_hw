@@ -53,3 +53,6 @@ Mkfile.old
 dkms.conf
 build/
 .vscode/
+*/*.gz
+*/*.aux
+*/*.log
