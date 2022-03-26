@@ -1,0 +1,85 @@
+\newcommand{\ones}{\mathbf 1}
+\newcommand{\reals}{{\mbox{\bf R}}}
+\newcommand{\integers}{{\mbox{\bf Z}}}
+\newcommand{\symm}{{\mbox{\bf S}}}  % symmetric matrices
+
+\newcommand{\nullspace}{{\mathcal N}}
+\newcommand{\range}{{\mathcal R}}
+\newcommand{\Rank}{\mathop{\bf Rank}}
+\newcommand{\Tr}{\mathop{\bf Tr}}
+\newcommand{\diag}{\mathop{\bf diag}}
+\newcommand{\card}{\mathop{\bf card}}
+\newcommand{\SNR}{\textrm{SNR}}
+\newcommand{\rank}{\mathop{\bf rank}}
+\newcommand{\conv}{\mathop{\bf conv}}
+\newcommand{\prox}{\mathbf{prox}}
+
+\newcommand{\Expect}{\mathbb{E}{}}
+\newcommand{\Prob}{\mathop{\bf Prob}}
+\newcommand{\Co}{{\mathop {\bf Co}}} % convex hull
+\newcommand{\dist}{\mathop{\bf dist{}}}
+\newcommand{\argmin}{\mathop{\rm argmin}}
+\newcommand{\argmax}{\mathop{\rm argmax}}
+\newcommand{\epi}{\mathop{\bf epi}} % epigraph
+\newcommand{\Vol}{\mathop{\bf vol}}
+\newcommand{\dom}{\mathop{\bf dom}} % domain
+\newcommand{\intr}{\mathop{\bf int}}
+\newcommand{\sign}{\mathop{\bf sign}}
+\newcommand{\mysign}[1]{\mathop{\rm{#1}}}
+\newcommand{\question}[1]{{\color{red}{#1}}}
+
+\newcommand{\cf}{{\it cf.}}
+\newcommand{\eg}{{\it e.g.}}
+\newcommand{\ie}{{\it i.e.}}
+\newcommand{\etc}{{\it etc.}}
+
+\definecolor{color1}{HTML}{D0B22B}
+\definecolor{dred}{RGB}{128,0,0}
+\definecolor{colorhkust}{RGB}{20,43,140}
+\definecolor{colorshanghaitech}{RGB}{162,0,5}
+\definecolor{colortsinghua}{RGB}{116,52,129}
+\definecolor{colorpink}{RGB}{255,204,204}
+\definecolor{colororange}{RGB}{255,153,102}
+\definecolor{header1}{cmyk}{.9,.5,0,.35}
+\newcommand{\ep}[1]{{\bf\color{colorhkust}{#1}}}
+\newcommand{\epeq}[1]{{\mathbf\color{colorhkust}{#1}}}
+\newcommand{\epb}[1]{{\bf\color{colorshanghaitech}{#1}}}
+
+\newcommand{\defpoints}[1]{{\color{magenta}{[#1 points]}}}
+\newcommand{\sol}{{\textcolor{colortsinghua}{Solution: }}}
+
+%
+% Various Helper Commands
+%
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+\newcommand{\dy}{\mathrm{d}y}
+\newcommand{\dt}{\mathrm{d}t}
+\newcommand{\ds}{\mathrm{d}s}
+\newcommand{\dz}{\mathrm{d}z}
+\newcommand{\dk}{\mathrm{d}k}
+\newcommand{\dm}{\mathrm{d}m}
+\newcommand{\dn}{\mathrm{d}n}
+\newcommand{\du}{\mathrm{d}u}
+\newcommand{\dl}{\mathrm{d}l}
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solution}}
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Corr}{\mathrm{Corr}}
+\newcommand{\Bias}{\mathrm{Bias}}
+
+\newcommand{\genstirlingII}[3]{%
+  \genfrac{\{}{\}}{0pt}{#1}{#2}{#3}%
+}
+\newcommand{\stirlingII}[2]{\genstirlingII{}{#1}{#2}}
+
