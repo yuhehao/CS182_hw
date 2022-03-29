@@ -58,10 +58,22 @@ $$l(\theta) = logP(Y|X) = \sum_{i=1}^Nlog(P(y_i|x_i))$$
 \textbf{Solution:}
 
   \item[\textbf{(a)}]
- 
+      We can define  a map $f(x)=\frac{e^x}{e^x+1}$ from the range of an arbitrary linear function to the range of a probability
 	\item[\textbf{(b)}] 
-
+      Let $$\log \frac{P(y_i=1|x_i)}{1 - P(y_i=1|x_i)} = \log \frac{P(y_i=1|x_i)}{P(y_i=0|x_i)} =\beta_0 +x^T \beta$$
+      By the properties of possibility, we know $$P(y_i=1|x_i)+P(y_i=0|x_i) = 1$$
+      Thus,$$P(y_i=1|x_i) = \frac{\exp (\beta_0+x^T\beta)}{1+\exp (\beta_0+x^T\beta)}$$
+      $$P(y_i=0|x_i) = \frac{1}{1+\exp (\beta_0+x^T\beta)}$$
 	\item[\textbf{(c)}] 
+      Let $\theta  = \{\beta_0,\beta\}$
+      $$
+      \begin{aligned}
+          l(\theta) &= \log P(Y|X;\theta)
+          \\&= \sum_{i=1}^N\log (P(y_i|x_i;\theta))
+          \\&=\sum_{i=1}^N(y_i\log (P(y_i=1|x_i;\theta))+ (1-y_i)\log (P(y_i=0|x_i;\theta)))
+          \\&=\sum_{i=1}^N(y_i(\beta_0+x^T\beta -\log (1+\exp (\beta_0+x^T\beta))))
+      \end{aligned}
+      $$
 \end{enumerate}
 \newpage
 \section{Problem2}
@@ -109,14 +121,41 @@ According to the following Fig.~\ref{fig2}, answer the following questions:
     \end{itemize}
 
 	\item[(b)] if all the nodes are observed and boolean variables, please complete the process of learning the parameter $ \theta_{x_6|i,j} $ by using \textbf{MLE}, where $ \theta_{x_6|i,j} = p(x_6 = 1\mid x_3 = i, x_4 = j), i,j \in \{ 0, 1\}$.{\color{red} [6 points]}
-	
+
 	\begin{figure}[h!] 
 		\centering
 		\includegraphics[width=2.5in]{3.png}
 		\label{fig2}
 		\caption{The Bayesian network for questions $3$.}
 	\end{figure}
-\end{enumerate}
+
+\textbf{Solution:}
+    \item[\textbf{(a)}]
+      \begin{enumerate}
+        \item[{(1)}]True.
+        Let A = $\{x_1,x_2 \}$, B = $\{x_6,x_7 \}$,
+        the path is like $A\rightarrow x_4 \rightarrow B$ head-to-tail.
+        For given $x_4$, $x_4$ is blocked, which means $ \{x_1, x_2\} $ and $ \{x_6, x_7\} $ are conditionally independent given $x_4$.
+        \item[{(2)}] False. First of all, $x_3\rightarrow x_6 \leftarrow x_4$ is head-to-head path,so for given $x_6$, $x_6$ is not blocked.
+        Then, $x_2 \rightarrow x_4 \rightarrow x_6$ is head-to-tail path, $x_4$ is not blocked for not given $x_4$.
+        Thus, Given $x_6$, $ x_3 $ and $ x_2 $ are not conditionally independent.
+      \end{enumerate}
+    \item[\textbf{(b)}]
+      Suppose we observed N points.
+      Let $\theta = \{\theta_{x_1}, \theta_{x_2}, \theta_{x_3}, \theta_{x_4}, \theta_{x_5}, \theta_{x_6|i,j}, \theta_{x_7|j} \}$
+      $$
+      \begin{aligned}
+          \log P(D|\theta) &= \log \prod_{k=1}^N P(x_{1k},x_{2k},x_{3k},x_{4k},x_{5k},x_{6k},x_{7k}|\theta)
+          \\&= \sum_{k=1}^N \log  (P(x_{1k}|\theta)+ P(x_{2k}|\theta)+ P(x_{3k}|\theta)+ P(x_{4k}|\theta)+ 
+          P(x_{5k}|\theta)+ P(x_{6k}|x_3,x_4,\theta)+ P(x_{7k}|x_4,\theta))
+      \end{aligned}
+      $$
+      $$\frac{\partial \log P(D|\theta)}{\partial \theta_{x_6}|i,j} = \sum_{k=1}^N \frac{\partial \log P(x_{6k}|x_3,x_4,\theta)s}{\partial \theta_{x_6}|i,j}$$
+      Now define $I(\cdot)$ be the indicator variable, $I(\cdot)=1$ if and only if is $(\cdot)$ is right, and 0 for all other cases.
+      Thus,
+      $$\theta_{x_6}|i,j = \frac{\sum_{k=1}^N I(x_{6k} = 1,x_{3k}=i,x_{4k}=j)}{I(x_{3k}=i,x_{4k}=j)}$$
+
+    \end{enumerate}
 
 
 \end{document}
