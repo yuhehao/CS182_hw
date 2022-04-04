@@ -71,7 +71,7 @@ $$l(\theta) = logP(Y|X) = \sum_{i=1}^Nlog(P(y_i|x_i))$$
           l(\theta) &= \log P(Y|X;\theta)
           \\&= \sum_{i=1}^N\log (P(y_i|x_i;\theta))
           \\&=\sum_{i=1}^N(y_i\log (P(y_i=1|x_i;\theta))+ (1-y_i)\log (P(y_i=0|x_i;\theta)))
-          \\&=\sum_{i=1}^N(y_i(\beta_0+x^T\beta -\log (1+\exp (\beta_0+x^T\beta))))
+          \\&=\sum_{i=1}^N(y_i(\beta_0+x^T\beta) -\log (1+\exp (\beta_0+x^T\beta)))
       \end{aligned}
       $$
 \end{enumerate}
@@ -107,7 +107,71 @@ $$l(\theta) = logP(Y|X) = \sum_{i=1}^Nlog(P(y_i|x_i))$$
     \item[(c)]
     Suppose the true parameter is $\theta = 0.31$. Please compare the prior in (b) with the Beta prior distribution(You can review this part in Lecture 07). Which prior leads to a better estimate when $N$ is small? Which prior leads to a better estimate when N is large? {\color{red} [2 points]} \\
 
+    \textbf{Solution:}
+    \item[\textbf{(a)}]
+      $D=\{3,1,3,0,3,1,2,3\}$,$\hat{\theta} = \underset{\theta}{\argmax}P(D|\theta)$
+      $$
+      \begin{aligned}
+        P(D|\theta)&=P^4(X=3|\theta)P^2(X=1|\theta)P(X=0|\theta)P(X=2|\theta)
+        \\&=(1-2\theta)^4(2\theta(1-\theta))^2\theta^4
+      \end{aligned}
+      $$
+      $$
+      \begin{aligned}
+        &\frac{d P(D|\theta)}{\mathrm{d}\theta}=0
+        \\ \Rightarrow &12\theta^2-14\theta+3=0
+        \\ \Rightarrow &\theta = \frac{7 \pm \sqrt{13}}{12}
+      \end{aligned}
+      $$
+      Because of the range of $\theta$, we know $\hat{\theta} = \frac{7 - \sqrt{13}}{12}$
+    \item[\textbf{(b)}]
+      Let X be the number of heads,by MAP,$\hat{\theta} = \underset{\theta}{\argmax}P(\theta|X=N_1)$
+      $$
+      \begin{aligned}
+        P(\theta |X = N_1) &=\frac{P(X=N_1|\theta)P(\theta)}{P(X=N_1)}
+        \\&\varpropto P(X=N_1|\theta)P(\theta)
+        \\&\varpropto \theta^{N_1}(1-\theta)^{N-N_1}p(\theta)
+        \\&=\begin{cases}
+          0.5 \times 0.5^{N_1}\times 0.5 ^{N-N_1}  \quad& \text { if } \theta=0.5  
+          \\0.5 \times 0.3^{N_1}\times 0.7 ^{N-N_1}  \quad& \text { if } \theta=0.3
+          \\0 &  otherwise
+        \end{cases}
+        \\&\varpropto \begin{cases}
+           0.5^{N}  \quad& \text { if } \theta=0.5  
+          \\0.3^{N_1}\times 0.7 ^{N-N_1} \quad& \text { if } \theta=0.3
+          \\0 &  otherwise
+        \end{cases}
+      \end{aligned}
+      $$
+      Thus,
+      $$\hat{\theta} = \begin{cases}
+        0.5 \quad& \text { if } N_1>N\log_{\frac{3}{7}}\frac{5}{7}
+          \\0.3 \quad& \text { if } N_1<N\log_{\frac{3}{7}}\frac{5}{7}
+      \end{cases}$$
+      \item[\textbf{(c)}]
+      By Beta prior, we know $\theta \sim Beta(N_1,N-N_1)$,
+      so,$$P(\theta) = \frac{1}{\beta(N_1,N-N_1)}\theta^{N_1-1}(1-\theta)^{N-N_1-1}$$
+      By MAP,
+      $$
+      \begin{aligned}
+        P(\theta |X = N_1) &=\frac{P(X=N_1|\theta)P(\theta)}{P(X=N_1)}
+        \\&\varpropto P(X=N_1|\theta)P(\theta)
+        \\&\varpropto \theta^{N_1}(1-\theta)^{N-N_1}p(\theta)
+        \\&=\theta^{N_1}(1-\theta)^{N-N_1}\frac{1}{\beta(N_1,N-N_1)}\theta^{N_1-1}(1-\theta)^{N-N_1-1}
+        \\&\varpropto \theta^{2N_1-1}(1-\theta)^{2N-2N_1-1}
+      \end{aligned}
+      $$
+      $\hat{\theta} = \underset{\theta}{\argmax}P(\theta|X=N_1)$,so
+      $$
+      \begin{aligned}
+        &\frac{d \theta^{2N_1-1}(1-\theta)^{2N-2N_1-1}}{\mathrm{d}\theta}=0
+        \\ \Rightarrow & \theta = \frac{2N_1-1}{2N-2}
+      \end{aligned}
+      $$
+      When N is large, the Beta prior is better. Because if N is large, $\lim_{x\rightarrow \infty}\frac{2N_1-1}{2N-2}=\frac{N_1}{N}=\theta$, has less gap. 
+      \\When N is small, the prior in (b) is better.Because if N is small, $\hat{\theta}=0.3$ is great enough. In fact, with small N, $\hat{\theta}=\frac{2N_1-1}{2N-2}$ by Beta prior is probably not closed to $0.31$.
 \end{enumerate}
+
 \newpage
 \section{Problem3}
 According to the following Fig.~\ref{fig2}, answer the following questions:
@@ -153,7 +217,7 @@ According to the following Fig.~\ref{fig2}, answer the following questions:
       $$\frac{\partial \log P(D|\theta)}{\partial \theta_{x_6}|i,j} = \sum_{k=1}^N \frac{\partial \log P(x_{6k}|x_3,x_4,\theta)s}{\partial \theta_{x_6}|i,j}$$
       Now define $I(\cdot)$ be the indicator variable, $I(\cdot)=1$ if and only if is $(\cdot)$ is right, and 0 for all other cases.
       Thus,
-      $$\theta_{x_6}|i,j = \frac{\sum_{k=1}^N I(x_{6k} = 1,x_{3k}=i,x_{4k}=j)}{I(x_{3k}=i,x_{4k}=j)}$$
+      $$\hat{\theta}_{x_6}|i,j = \frac{\sum_{k=1}^N I(x_{6k} = 1,x_{3k}=i,x_{4k}=j)}{I(x_{3k}=i,x_{4k}=j)}$$
 
     \end{enumerate}
 
