@@ -1,0 +1,174 @@
+%!TEX program = xelatex
+\documentclass[10pt]{article}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{titlesec}
+\usepackage{xcolor}
+%\usepackage[shortlabels]{enumitem}
+\usepackage{enumerate}
+\usepackage{bm}
+\usepackage{tikz}
+\usepackage{listings}
+\usetikzlibrary{arrows}
+\usepackage{subfigure}
+\usepackage{graphicx,booktabs,multirow}
+\usepackage[a4paper]{geometry}
+\usepackage{upquote}
+\usepackage{float}
+\usepackage{pdfpages}
+\usepackage{amsthm}
+\usepackage{bbm}
+
+
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\lstset{language=Matlab}
+\lstset{breaklines}
+
+\input defs.tex
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\titleformat*{\section}{\centering\LARGE\scshape}
+\renewcommand{\thesection}{\Roman{section}}
+\lstset{language=Matlab,tabsize=4,frame=shadowbox,basicstyle=\footnotesize,
+keywordstyle=\color{blue!90}\bfseries,breaklines=true,commentstyle=\color[RGB]{50,50,50},stringstyle=\ttfamily,numbers=left,numberstyle=\tiny,
+  numberstyle={\color[RGB]{192,92,92}\tiny},backgroundcolor=\color[RGB]{245,245,244},inputpath=code}
+
+\begin{document}
+
+\date{}
+\title{CS182, Spring 2022 \\
+	Homework 3\\
+	\small (Due Tuesday, May. 24 at 11:59pm (CST))}
+\maketitle
+\begin{enumerate}
+
+
+	\item \defpoints{15} Given a Bayesian network (Fig.~\ref{fig3}) with five discrete variables $\{F,A,S,H,N\}$,
+	      where $\{F,A,S,H,N\}$ are boolean variables.
+	      Suppose that $\{F,A,H,N\}$ are observed variables and $\{S\}$ is a latent variable.
+	      Now we implement EM algorithm for this model.
+	      \begin{figure}[h!]
+		      \centering
+		      \includegraphics[width=.4\linewidth]{fig/bn.jpg}
+		      \label{fig3}
+		      \caption{The Bayesian network with five discrete variables $\{F,A,S,H,N\}$.}
+	      \end{figure}
+	      \begin{itemize}
+		      \item[(a)] Derive the E-step. ~\defpoints{5} \\
+		      \item[(b)] Derive the M-step. ~\defpoints{5} \\
+		      \item[(c)] Guess the solution of parameter estimation in the M-step, according to the MLE solution with all variables being observed. ~\defpoints{5} \\
+	      \end{itemize}
+
+	      \newpage
+
+	    \item \defpoints{20}
+	        Suppose two data points($x_1 = 0$, $x_2 = 1$) are generated from two Gaussian mixture model(A and B).The parameter of the two Gaussian model are unknown. We want to use EM to guess parameters of the two Gaussian models. For simplicity, the priors are set to equal, which means $P(a) = P(b) = \frac{1}{2}$.
+            EM can be divided into following steps:
+            \begin{enumerate}
+                \item Randomly choose $(\mu_a, \sigma_a^2)$ and $(\mu_b, \sigma_b^2)$.
+                \item For each point $x_i$, calculate $P(a|x_i)$ and $P(b|x_i)$.
+                \item Adjust $(\mu_a, \sigma_a^2)$ and $(\mu_b, \sigma_b^2)$.
+                \item Repeat 2 and 3 until convergence.
+            \end{enumerate}
+            Suppose we randomly choose parameters as: $(\mu_a, \sigma_a^2) = (0, 1)$ and $(\mu_b, \sigma_b^2) = (1, 1)$
+
+            \begin{enumerate}
+                \item[(1)] E-step: calculate $P(a|x_i)$ and $P(b|x_i)$, $i = 1, 2$.\defpoints{10}\\
+                \item[(2)] M-step: Adjust $(\mu_a, \sigma_a^2)$ and $(\mu_b, \sigma_b^2)$ with following formula.\defpoints{10} \\
+                $$\mu_a = \frac{a_1x_1 + a_2x_2}{a_1 + a_2}, \qquad \sigma_a^2 = \frac{a_1(x_1-\mu_a)^2 + a_2(x_2-\mu_a)^2}{a_1 + a_2}$$
+                where $a_1 = P(a|x_1)$ and $a_2 = P(a|x_2)$\\
+            \end{enumerate}
+            \newpage
+
+	    \item ~\defpoints{30}
+        Suppose that we are interested in learning a classifier, such that at any turn of a game we can pose a question, like "should I attack this ant hill now?", and get an answer.That is, we want to build a classifier which we can feed some features on the current game state, and get the output "attack" or "don't attack". There are many possible ways to define what the action "attack" means, but for now let's define it as sending all friendly ants that can see the ant hill under consideration towards it.
+
+	    Let’s recall the AdaBoost algorithm described in class. Its input is a dataset $\{(x_{i},y_{i})\}_{i=1}^{n}$, with $x_i$ being the $i$-th sample, and $y_{i}\in \{-1,1\}$ denoting the $i$-th label, $i=1,2,...,n$. The features might be composed of a count of the number of friendly ants that can see the ant hill under consideration, and a count of the number of enemy ants these friendly ants can see. For example, if there were 10 friendly ants that could see a particular ant hill, and 5 enemy ants that the friendly ants could see, we would have:
+	    \begin{align*}
+		    x_1 = \begin{bmatrix}
+			10 \\
+			5
+		    \end{bmatrix}.
+	    \end{align*}
+
+	    The label of the example $x_{1}$ is $y_{1} = 1$, once the friendly ants were successful in razing the enemy ant hill, and $y_{1} = 0$ otherwise. We could generate such examples by running a greedy bot (or any other opponent bot) against a bot that we make periodically try to attack an enemy ant hill. Each time this bot tries the attack, we record (say, after $20$ turns or some other significant amount of time) whether the attack was successful or not.
+
+	    \begin{itemize}
+            \item[(a)] Let $\epsilon_t$ denote the error of a weak classifier $h_t$:
+		        \begin{align*}
+		            \epsilon_{t} = \sum_{i=1}^{n} D_{t}(i) \mathbbm{1}(y_{i} \neq h_{t}(x_{i})).
+		        \end{align*}
+		        In the simple “attack” / “don’t attack” scenario, suppose that we have implemented the following six weak classifiers:
+		        \begin{align*}
+		            h^{(1)}(x_{i}) = 2 * \mathbbm{1}(x_{i1} \geq 2) - 1, \hspace{1cm}  & h^{(4)}(x_{i}) = 2 * \mathbbm{1}(x_{i2} \leq 2) - 1,  \\
+			        h^{(2)}(x_{i}) = 2 * \mathbbm{1}(x_{i1} \geq 6) - 1, \hspace{1cm}  & h^{(5)}(x_{i}) = 2 * \mathbbm{1}(x_{i2} \leq 6) - 1,  \\
+			        h^{(3)}(x_{i}) = 2 * \mathbbm{1}(x_{i1} \geq 10) - 1, \hspace{1cm} & h^{(6)}(x_{i}) = 2 * \mathbbm{1}(x_{i2} \leq 10) - 1. \\
+		        \end{align*}
+		        Given ten training data points ($n = 10$) as shown in Table 1,
+		        \begin{table}[t]
+                    \caption{The training data in (a).}
+                    \label{table1}
+                    \centering
+                    \begin{tabular}{|c|cc|c|}
+                    \hline
+                    $i$ & $x_{i1}$ & $x_{i2}$ & $y_{i}$ \\ \hline
+                    1 & 1.5 & 0.5 & 1 \\
+                    2 & 2.5 & 1.5 & 1 \\
+                    3 & 3.5 & 3.5 & 1 \\
+                    4 & 6.5 & 5.5 & 1 \\
+                    5 & 7.5 & 10.5 & 1 \\
+                    6 & 1.5 & 2.5 & -1 \\
+                    7 & 3.5 & 1.5 & -1 \\
+                    8 & 5.5 & 5.5 & -1 \\
+                    9 & 7.5 & 8.5 & -1 \\
+                    10 & 1.5 & 10.5 & -1 \\
+                    \hline
+                    \end{tabular}
+                \end{table}
+		        please show that what is the minimum value of $\epsilon_{1}$ and which of $h^{(1)},...,h^{(6)}$ achieve this value? Note that there may be multiple classifiers that all have the same $\epsilon_{1}$. You should list all classifiers that achieve the minimum $\epsilon_{1}$ value.~\defpoints{6}\\
+
+	        \item[(b)] For all the questions in the remainder of this section, let $h_{1}$ denote $h^{(1)}$ chosen in the first round of boosting. (That is, $h^{(1)}$ was the classifier that achieved the minimum $\epsilon_{1}$.)
+		        \begin{enumerate}
+			        \item[(1)] What is the value of $\alpha_{1}$ (the weight of this first classifier $h_{1}$)? ~\defpoints{2}\\
+
+			        \item[(2)] What should $Z_{t}$ be in order to make sure the distribution $D_{t+1}$ is normalized correctly? That is, derive the formula of $Z_{t}$ in terms of $\epsilon_{t}$ that will ensure $\sum_{i=1}^{n} D_{t+1}(i) = 1$. Please aslo derive the formula of $\alpha_{t}$ in terms of $\epsilon_{t}$. ~\defpoints{6}\\
+
+			        \item[(3)] Which points will increase in significance in the second round of boosting? That is, for which points will we have $D_{1}(i) < D_{2}(i)$? What are the values of $D_{2}$ for these points?~\defpoints{5}\\
+
+			        \item[(4)] In the second round of boosting, the weights on the points will be different, and thus the error $\epsilon_2$ will also be different. Which of $h^{(1)}, . . . , h^{(6)}$ will minimize $\epsilon_2$? (Which classifier will be selected as the second weak classifier $h_2$?) What is its value of $\epsilon_2$?~\defpoints{6}\\
+
+			        \item[(5)] What will the average error of the final classifier $H$ be, if we stop after these two rounds of boosting? That is, if $H(x) = \text{sign}(\alpha_{1}h_{1}(x) + \alpha_{2}h_{2}(x))$, what will the  training error $\epsilon = \frac{1}{n} \sum_{i=1}^{n} \mathbbm{1} (y_{i} \neq h(x_{i}))$ be? Is this more, less, or the same as the error we would get, if we just used one of the weak classifiers instead of this final classifier $H$?~\defpoints{5}\\
+
+		        \end{enumerate}
+        \end{itemize}
+
+        \newpage
+
+        \item ~\defpoints{15}
+        Given valid kernels $k_1(\mathbf{x}, \mathbf{x}')$ and $k_2(\mathbf{x}, \mathbf{x}')$, please verify the following new kernels will also be valid:
+	    \begin{enumerate}
+		    \item $k\left(\mathbf{x}, \mathbf{x}^{\prime}\right)=f(\mathbf{x}) k_{1}\left(\mathbf{x}, \mathbf{x}^{\prime}\right) f\left(\mathbf{x}^{\prime}\right)$, where $f(\cdot)$ is any function. ~\defpoints{5}
+		    \item $k(\mathbf{x}, \mathbf{x}^\prime) = q(k_1(\mathbf{x}, \mathbf{x}^\prime))$, where $q(\cdot)$ is a polynomial with nonnegative coefficients. ~\defpoints{5}
+		    \item $k(\mathbf{x}, \mathbf{x}^\prime) = \mathbf{x^\top}\mathbf{Ax}^\prime$, where $\mathbf{A}$ is a symmetric positive semi-definite matrix.~\defpoints{5}
+	    \end{enumerate}
+
+	    \newpage
+
+	    \item ~\defpoints{20} We have learned that when solving a SVM problem, we need to first construct Lagrangian function $L(w,b,\alpha)$ and set partial derivative to zero. By using KKT conditions, we can get the dual problem of SVM :
+	    \begin{align*}
+		    & \underset{\alpha}{min} \  \frac{1}{2}\sum\limits_{i=1}^{n}\sum\limits_{j=1}^{n}\alpha_i \alpha_j y_i y_j <x_i,x_j> - \sum\limits_{i=1}^{n}\alpha_i , \\ & \ \ \ \ \ \ \  s.t. \ \alpha_i \geq 0 , \ \ \ \ \sum\limits_{i=1}^{n}\alpha_i y_i = 0
+		\end{align*}
+	    Now we use a simple example to better understand how SVM works. We consider the separating hyperplane being $wx + b = 0$. Suppose we have three data points: $x_1 = (2,-1)^T, x_2 = (2,-3)^T, x_3 = (4,-1)^T$, the corresponding labels are: $y_1 = -1, y_2 = -1, y_3 = 1$. Use SVM to find the the values of $w^* = (w_1^*, w_2^*)$, $b^*$ and give the separating hyperplane. Please show your calculation process.
+
+
+\end{enumerate}
+
+
+
+
+
+\end{document}
